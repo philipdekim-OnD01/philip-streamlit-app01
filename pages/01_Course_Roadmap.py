@@ -475,31 +475,28 @@ weeks = [
     },
 ]
 
-rail_html = '<div class="week-rail-wrap"><div class="week-rail">'
+rail_nodes = []
 for item in weeks:
-    rail_html += f"""
-    <div class="week-node {item["kind"]}">
-        <div class="week-dot">{item["week"]}</div>
-        <div class="week-label">{item["title"]}</div>
-        <div class="week-band">{item["band"]}</div>
-    </div>
-    """
-rail_html += "</div></div>"
+    rail_nodes.append(
+        f'<div class="week-node {item["kind"]}">'
+        f'<div class="week-dot">{item["week"]}</div>'
+        f'<div class="week-label">{item["title"]}</div>'
+        f'<div class="week-band">{item["band"]}</div>'
+        "</div>"
+    )
+rail_html = '<div class="week-rail-wrap"><div class="week-rail">' + "".join(rail_nodes) + "</div></div>"
 st.markdown(rail_html, unsafe_allow_html=True)
 
-st.markdown('<div class="week-grid">', unsafe_allow_html=True)
+week_cards = []
 for item in weeks:
-    st.markdown(
-        f"""
-        <div class="week-card">
-            <h3>{item["week"]}주차 · {item["title"]}</h3>
-            <p>{item["body"]}</p>
-            <a href="{item["url"]}" target="_blank" rel="noopener">해당 강좌 열기</a>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    week_cards.append(
+        f'<div class="week-card">'
+        f'<h3>{item["week"]}주차 · {item["title"]}</h3>'
+        f'<p>{item["body"]}</p>'
+        f'<a href="{item["url"]}" target="_blank" rel="noopener">해당 강좌 열기</a>'
+        "</div>"
     )
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown('<div class="week-grid">' + "".join(week_cards) + "</div>", unsafe_allow_html=True)
 
 
 left, right = st.columns([1.05, 0.95], gap="large")
