@@ -1,5 +1,6 @@
 from pathlib import Path
 from datetime import datetime
+from io import BytesIO
 import json
 
 import joblib
@@ -55,9 +56,53 @@ LIVE_HOME_URL = "https://philip-app-app01-kim.streamlit.app/"
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_DIR = BASE_DIR / "saved_models"
 REPORT_DIR = BASE_DIR / "reports"
+RUNTIME_MODEL_DIR = MODEL_DIR / "runtime_models"
 
 MODEL_DIR.mkdir(exist_ok=True)
 REPORT_DIR.mkdir(exist_ok=True)
+RUNTIME_MODEL_DIR.mkdir(exist_ok=True)
+
+
+@st.cache_data(show_spinner=False)
+def load_uploaded_csv(csv_bytes: bytes) -> pd.DataFrame:
+    """Cache uploaded CSV parsing to avoid repeated reads on reruns."""
+    return pd.read_csv(BytesIO(csv_bytes))
+
+
+@st.cache_resource(show_spinner=False)
+def load_model_from_path(model_path: str):
+    """Load a trained model lazily from disk."""
+    return joblib.load(model_path)
+
+
+def save_runtime_model(model_name: str, model_obj) -> str:
+    """Persist a fitted model to disk and return the path."""
+    safe_name = "".join(ch if ch.isalnum() or ch in ("_", "-") else "_" for ch in model_name)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    model_path = RUNTIME_MODEL_DIR / f"{safe_name}_{timestamp}.joblib"
+    joblib.dump(model_obj, model_path)
+    return str(model_path)
+
+
+def get_model_object(payload: dict):
+    """Return an in-memory model if present, otherwise load it from disk."""
+    model = payload.get("model")
+    if model is not None:
+        return model
+
+    model_path = payload.get("model_path")
+    if not model_path:
+        raise ValueError("Model payload does not include a model or model_path.")
+
+    return load_model_from_path(model_path)
+
+
+def strip_model_objects(models: dict) -> dict:
+    """Remove in-memory model objects before saving into session_state."""
+    stripped = {}
+    for key, payload in models.items():
+        stripped[key] = {k: v for k, v in payload.items() if k != "model"}
+    return stripped
 
 
 def detect_problem_type(y: pd.Series) -> str:
@@ -246,6 +291,7 @@ def train_baseline_models(X_train, X_test, y_train, y_test, problem_type: str):
 
             trained_models[f"{model_name} 기본모델"] = {
                 "model": pipe,
+                "model_path": save_runtime_model(f"{model_name}_baseline", pipe),
                 "metrics": metrics,
                 "best_params": None,
                 "model_type": "baseline",
@@ -301,7 +347,7 @@ def tune_top_models(
             st.info(f"{base_model_name}은 튜닝 파라미터가 없어 건너뜁니다.")
             continue
 
-        baseline_model = trained_models[baseline_key]["model"]
+        baseline_model = get_model_object(trained_models[baseline_key])
         params = param_distributions[base_model_name]
 
         search = RandomizedSearchCV(
@@ -324,6 +370,7 @@ def tune_top_models(
             tuned_key = f"{base_model_name} 튜닝모델"
             tuned_models[tuned_key] = {
                 "model": best_model,
+                "model_path": save_runtime_model(tuned_key, best_model),
                 "metrics": metrics,
                 "best_params": search.best_params_,
                 "best_cv_score": search.best_score_,
@@ -374,7 +421,7 @@ def save_model_artifacts(
 
     payload = {
         "model_name": selected_model_name,
-        "model": selected_payload["model"],
+        "model": get_model_object(selected_payload),
         "problem_type": problem_type,
         "target_column": target_column,
         "feature_columns": feature_columns,
@@ -523,7 +570,7 @@ def tune_selected_model(
     """
 
     base_model_name = selected_payload["base_model_name"]
-    baseline_model = selected_payload["model"]
+    baseline_model = get_model_object(selected_payload)
     baseline_metrics = selected_payload["metrics"]
 
     param_grid = get_param_grid_for_selected_model(problem_type, base_model_name)
@@ -848,7 +895,7 @@ def tune_top_models(
             st.info(f"{base_model_name}은 튜닝 파라미터가 없어 건너뜁니다.")
             continue
 
-        baseline_model = trained_models[baseline_key]["model"]
+        baseline_model = get_model_object(trained_models[baseline_key])
         params = param_distributions[base_model_name]
 
         search = RandomizedSearchCV(
@@ -924,7 +971,7 @@ def save_model_artifacts(
 
     payload = {
         "model_name": selected_model_name,
-        "model": selected_payload["model"],
+        "model": get_model_object(selected_payload),
         "problem_type": problem_type,
         "target_column": target_column,
         "feature_columns": feature_columns,
@@ -1068,7 +1115,7 @@ if uploaded_file is None:
     st.stop()
 
 
-df = pd.read_csv(uploaded_file)
+df = load_uploaded_csv(uploaded_file.getvalue())
 
 tab_data, tab_train, tab_tune, tab_viz, tab_predict, tab_save = st.tabs(
     [
@@ -1235,7 +1282,7 @@ if train_button:
     st.session_state["target_column"] = target_column
     st.session_state["feature_columns"] = feature_columns
     st.session_state["label_encoder"] = label_encoder
-    st.session_state["trained_models"] = all_models
+    st.session_state["trained_models"] = strip_model_objects(all_models)
     st.session_state["baseline_result_df"] = baseline_result_df
     st.session_state["tuned_result_df"] = tuned_result_df
     st.session_state["all_result_df"] = all_result_df
@@ -1290,7 +1337,7 @@ with tab_viz:
             key="viz_model",
         )
 
-        model = all_models[selected_for_viz]["model"]
+        model = get_model_object(all_models[selected_for_viz])
         X_test = st.session_state["X_test"]
         y_test = st.session_state["y_test"]
         problem_type = st.session_state["problem_type"]
@@ -1347,7 +1394,7 @@ with tab_predict:
             key="predict_model",
         )
 
-        selected_model = all_models[selected_model_name]["model"]
+        selected_model = get_model_object(all_models[selected_model_name])
         X = st.session_state["X"]
 
         st.markdown("아래 값을 입력한 뒤 예측 버튼을 누르세요.")
