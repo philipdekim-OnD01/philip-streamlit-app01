@@ -1222,10 +1222,10 @@ if train_button:
         if len(tuned_result_df) > 0:
             all_result_df = pd.concat([baseline_result_df, tuned_result_df], ignore_index=True)
 
-            if problem_type == "classification":
-                all_result_df = all_result_df.sort_values("f1", ascending=False)
-            else:
-                all_result_df = all_result_df.sort_values("rmse", ascending=True)
+            metric_col = get_primary_metric_column(problem_type, all_result_df)
+            if metric_col is not None:
+                ascending = metric_col in {"rmse", "mae"}
+                all_result_df = all_result_df.sort_values(metric_col, ascending=ascending)
 
     st.session_state["X"] = X
     st.session_state["y"] = y
