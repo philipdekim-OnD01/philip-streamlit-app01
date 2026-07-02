@@ -188,6 +188,18 @@ def get_param_distributions(problem_type: str) -> dict:
     }
 
 
+
+
+def get_primary_metric_column(problem_type: str, df: pd.DataFrame) -> str | None:
+    """Return the best available metric column for charts/sorting."""
+    if df is None or len(df) == 0:
+        return None
+    preferred = ["f1", "accuracy", "precision", "recall"] if problem_type == "classification" else ["rmse", "r2", "mae"]
+    for col in preferred:
+        if col in df.columns:
+            return col
+    return None
+
 def evaluate_model(problem_type: str, y_true, y_pred) -> dict:
     """
     회귀와 분류에 맞는 평가 지표를 계산한다.
@@ -252,10 +264,10 @@ def train_baseline_models(X_train, X_test, y_train, y_test, problem_type: str):
 
     result_df = pd.DataFrame(results)
 
-    if problem_type == "classification":
-        result_df = result_df.sort_values("f1", ascending=False)
-    else:
-        result_df = result_df.sort_values("rmse", ascending=True)
+    metric_col = get_primary_metric_column(problem_type, result_df)
+    if metric_col is not None:
+        ascending = metric_col in {"rmse", "mae"}
+        result_df = result_df.sort_values(metric_col, ascending=ascending)
 
     return trained_models, result_df
 
@@ -334,10 +346,10 @@ def tune_top_models(
     tuned_result_df = pd.DataFrame(tuned_results)
 
     if len(tuned_result_df) > 0:
-        if problem_type == "classification":
-            tuned_result_df = tuned_result_df.sort_values("f1", ascending=False)
-        else:
-            tuned_result_df = tuned_result_df.sort_values("rmse", ascending=True)
+        metric_col = get_primary_metric_column(problem_type, tuned_result_df)
+        if metric_col is not None:
+            ascending = metric_col in {"rmse", "mae"}
+            tuned_result_df = tuned_result_df.sort_values(metric_col, ascending=ascending)
 
     return tuned_models, tuned_result_df
 
@@ -570,10 +582,10 @@ def tune_selected_model(
 
     compare_df = pd.DataFrame([before_row, after_row])
 
-    if problem_type == "classification":
-        compare_df = compare_df.sort_values("f1", ascending=False)
-    else:
-        compare_df = compare_df.sort_values("rmse", ascending=True)
+    metric_col = get_primary_metric_column(problem_type, compare_df)
+    if metric_col is not None:
+        ascending = metric_col in {"rmse", "mae"}
+        compare_df = compare_df.sort_values(metric_col, ascending=ascending)
 
     return tuned_model_name, tuned_payload, compare_df
 
@@ -717,6 +729,18 @@ def get_param_distributions(problem_type: str) -> dict:
     }
 
 
+
+
+def get_primary_metric_column(problem_type: str, df: pd.DataFrame) -> str | None:
+    """Return the best available metric column for charts/sorting."""
+    if df is None or len(df) == 0:
+        return None
+    preferred = ["f1", "accuracy", "precision", "recall"] if problem_type == "classification" else ["rmse", "r2", "mae"]
+    for col in preferred:
+        if col in df.columns:
+            return col
+    return None
+
 def evaluate_model(problem_type: str, y_true, y_pred) -> dict:
     """
     회귀와 분류에 맞는 평가 지표를 계산한다.
@@ -783,10 +807,10 @@ def train_baseline_models(X_train, X_test, y_train, y_test, problem_type: str):
 
     result_df = pd.DataFrame(results)
 
-    if problem_type == "classification":
-        result_df = result_df.sort_values("f1", ascending=False)
-    else:
-        result_df = result_df.sort_values("rmse", ascending=True)
+    metric_col = get_primary_metric_column(problem_type, result_df)
+    if metric_col is not None:
+        ascending = metric_col in {"rmse", "mae"}
+        result_df = result_df.sort_values(metric_col, ascending=ascending)
 
     return trained_models, result_df
 
@@ -872,10 +896,10 @@ def tune_top_models(
     tuned_result_df = pd.DataFrame(tuned_results)
 
     if len(tuned_result_df) > 0:
-        if problem_type == "classification":
-            tuned_result_df = tuned_result_df.sort_values("f1", ascending=False)
-        else:
-            tuned_result_df = tuned_result_df.sort_values("rmse", ascending=True)
+        metric_col = get_primary_metric_column(problem_type, tuned_result_df)
+        if metric_col is not None:
+            ascending = metric_col in {"rmse", "mae"}
+            tuned_result_df = tuned_result_df.sort_values(metric_col, ascending=ascending)
 
     return tuned_models, tuned_result_df
 
@@ -1229,10 +1253,11 @@ with tab_train:
         baseline_result_df = st.session_state["baseline_result_df"]
         st.dataframe(baseline_result_df, width="stretch")
 
-        if st.session_state["problem_type"] == "classification":
-            st.bar_chart(baseline_result_df.set_index("model_name")["f1"])
+        metric_col = get_primary_metric_column(st.session_state["problem_type"], baseline_result_df)
+        if metric_col is None:
+            st.warning("표시할 평가 지표가 없습니다. 먼저 모델 학습이 정상적으로 완료되었는지 확인하세요.")
         else:
-            st.bar_chart(baseline_result_df.set_index("model_name")["rmse"])
+            st.bar_chart(baseline_result_df.set_index("model_name")[metric_col])
 
 
 with tab_tune:
