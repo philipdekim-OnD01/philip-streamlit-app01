@@ -1,6 +1,5 @@
 import pandas as pd
 import plotly.graph_objects as go
-import runpy
 import streamlit as st
 
 
@@ -10,26 +9,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-
-
-def get_page_param():
-    try:
-        value = st.query_params.get("page", "")
-    except AttributeError:
-        value = st.experimental_get_query_params().get("page", [""])[0]
-    if isinstance(value, list):
-        return value[0] if value else ""
-    return value
-
-
-if get_page_param() == "roadmap":
-    runpy.run_path("pages/01_Course_Roadmap.py", run_name="course_roadmap_embedded")
-    st.stop()
-
-if get_page_param() == "ml-service":
-    runpy.run_path("pages/02_ML_Service.py", run_name="ml_service_embedded")
-    st.stop()
-
 
 st.markdown(
     """
@@ -283,8 +262,8 @@ with st.sidebar:
     st.markdown("- 딥러닝 모델 이해")
     st.markdown("- Ondevice AI 응용")
     st.markdown("- 실습·배포 중심 구성")
-    st.link_button("Ondevice AI 교육 로드맵", "/?page=roadmap")
-    st.link_button("머신러닝 평가 서비스", "/?page=ml-service")
+    st.page_link("pages/01_Course_Roadmap.py", label="Ondevice AI 교육 로드맵")
+    st.page_link("pages/02_ML_Service.py", label="머신러닝 평가 서비스")
     st.divider()
     st.markdown("**바로가기**")
     st.link_button("GitHub Repository", "https://github.com/philipdekim-OnD01/philip-streamlit-app01")
@@ -324,8 +303,8 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-st.link_button("10주 교육 로드맵 바로 열기", "/?page=roadmap")
-st.link_button("머신러닝 평가 서비스 열기", "/?page=ml-service")
+st.page_link("pages/01_Course_Roadmap.py", label="10주 교육 로드맵 바로 열기")
+st.page_link("pages/02_ML_Service.py", label="머신러닝 평가 서비스 열기")
 
 
 st.markdown('<div class="section-title">교육의 3단계</div>', unsafe_allow_html=True)
