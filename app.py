@@ -263,7 +263,7 @@ with st.sidebar:
     st.markdown("- 딥러닝 모델 이해")
     st.markdown("- Ondevice AI 응용")
     st.markdown("- 실습·배포 중심 구성")
-    st.info("왼쪽 페이지 메뉴에서 Ondevice AI 교육 로드맵을 열 수 있습니다.")
+    st.page_link("pages/01_Course_Roadmap.py", label="Ondevice AI 교육 로드맵")
     st.divider()
     st.markdown("**바로가기**")
     st.link_button("GitHub Repository", "https://github.com/philipdekim-OnD01/philip-streamlit-app01")
@@ -289,6 +289,8 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+st.page_link("pages/01_Course_Roadmap.py", label="10주 교육 로드맵 바로 열기")
 
 
 st.markdown('<div class="section-title">교육의 3단계</div>', unsafe_allow_html=True)
