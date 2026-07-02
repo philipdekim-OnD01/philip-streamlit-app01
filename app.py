@@ -80,7 +80,8 @@ st.markdown(
         letter-spacing: .02em;
     }
 
-    .hero h1 {
+    .hero h1,
+    .hero h2 {
         margin: 18px 0 14px;
         color: var(--ink);
         font-size: 54px;
@@ -262,6 +263,7 @@ with st.sidebar:
     st.markdown("- 실습 중심 학습 흐름")
     st.markdown("- Vision 이상탐지 예제")
     st.markdown("- 수업 자료 게시 예정")
+    st.info("왼쪽 페이지 메뉴에서 딥러닝 강의 로드맵을 열 수 있습니다.")
     st.divider()
     st.markdown("**바로가기**")
     st.link_button("GitHub Repository", "https://github.com/philipdekim-OnD01/philip-streamlit-app01")
@@ -272,7 +274,7 @@ st.markdown(
     """
     <section class="hero">
         <div class="eyebrow">DEEP LEARNING EDUCATION</div>
-        <h1>딥러닝을 수식이 아니라 동작으로 이해하는 강의실</h1>
+        <h2>딥러닝을 수식이 아니라 동작으로 이해하는 강의실</h2>
         <p>
             입력 데이터가 모델을 지나 예측값이 되고, 손실 함수와 역전파를 통해 가중치가 바뀌는 과정을
             초급자도 따라올 수 있도록 시각화와 실습 중심으로 정리합니다.
