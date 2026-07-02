@@ -173,6 +173,132 @@ st.markdown(
         line-height: 1.55;
     }
 
+    .week-rail-wrap {
+        margin: 20px 0 28px;
+        padding: 22px 18px;
+        border-radius: 16px;
+        border: 1px solid #dfe6f1;
+        background: #ffffff;
+        box-shadow: 0 12px 34px rgba(22, 32, 51, .06);
+        overflow-x: auto;
+    }
+
+    .week-rail {
+        min-width: 980px;
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        align-items: start;
+        position: relative;
+        gap: 0;
+    }
+
+    .week-rail:before {
+        content: "";
+        position: absolute;
+        top: 24px;
+        left: 5%;
+        right: 5%;
+        height: 4px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #2563eb, #16a34a, #f97316);
+        opacity: .24;
+    }
+
+    .week-node {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        justify-items: center;
+        gap: 8px;
+        text-align: center;
+        padding: 0 6px;
+    }
+
+    .week-dot {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: #2563eb;
+        border: 5px solid #eaf2ff;
+        box-shadow: 0 10px 22px rgba(37, 99, 235, .18);
+        font-weight: 800;
+        font-size: 17px;
+    }
+
+    .week-node.ml .week-dot { background: #2563eb; }
+    .week-node.dl .week-dot { background: #7c3aed; }
+    .week-node.edge .week-dot { background: #16a34a; }
+    .week-node.practice .week-dot { background: #f97316; }
+
+    .week-label {
+        min-height: 42px;
+        color: #162033;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.35;
+    }
+
+    .week-band {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: #f0f6ff;
+        color: #1d4ed8;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .week-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .week-card {
+        height: 100%;
+        padding: 18px 20px;
+        border-radius: 14px;
+        border: 1px solid #dfe6f1;
+        background: #ffffff;
+        box-shadow: 0 10px 28px rgba(22, 32, 51, .055);
+    }
+
+    .week-card h3 {
+        margin: 0 0 8px;
+        color: #162033;
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .week-card p {
+        margin: 0 0 12px;
+        color: #5b6475;
+        font-size: 15px;
+        line-height: 1.55;
+    }
+
+    .week-card a {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 11px;
+        border-radius: 9px;
+        background: #edf4ff;
+        color: #1d4ed8;
+        font-size: 13px;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+        .week-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
     .code-box {
         padding: 20px 22px;
         border-radius: 14px;
@@ -259,37 +385,139 @@ for col, (stage, title, body, tags) in zip(stage_cols, stages):
         )
 
 
+st.markdown('<div class="section-title">10주 타임라인</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="section-subtitle">1----2----3----4----5----6----7----8----9----10 흐름으로, 마지막 3주는 실습과 발표 중심입니다.</div>',
+    unsafe_allow_html=True,
+)
+
+weeks = [
+    {
+        "week": "1",
+        "band": "기초",
+        "kind": "ml",
+        "title": "선형대수와 AI",
+        "body": "벡터, 행렬, `Xw`, 손실함수, 미분이 AI 모델 안에서 어떤 역할을 하는지 잡습니다.",
+        "url": "https://philipdekim-ond01.github.io/obsidian-blog/ai-math/",
+    },
+    {
+        "week": "2",
+        "band": "ML",
+        "kind": "ml",
+        "title": "머신러닝 1",
+        "body": "회귀, OLS, Ridge, Lasso, feature와 target의 관계를 이해합니다.",
+        "url": "https://philipdekim-ond01.github.io/obsidian-blog/ai-semiconductor-course-review-ondevice-lightweighting.html",
+    },
+    {
+        "week": "3",
+        "band": "ML",
+        "kind": "ml",
+        "title": "머신러닝 2",
+        "body": "분류, Naive Bayes, Decision Tree, SVM, accuracy/F1/ROC-AUC를 비교합니다.",
+        "url": "https://philipdekim-ond01.github.io/obsidian-blog/ai-semiconductor-course-review-ondevice-lightweighting.html",
+    },
+    {
+        "week": "4",
+        "band": "DL",
+        "kind": "dl",
+        "title": "딥러닝 1",
+        "body": "퍼셉트론, 활성화 함수, gradient descent, backpropagation의 기본 흐름을 봅니다.",
+        "url": "https://philipdekim-ond01.github.io/obsidian-blog/ai-math/12-tiny-neural-network.html",
+    },
+    {
+        "week": "5",
+        "band": "DL",
+        "kind": "dl",
+        "title": "딥러닝 2",
+        "body": "CNN, 이미지 분류, 데이터 증강, 전이학습을 On-device 실습의 준비 단계로 연결합니다.",
+        "url": "https://philipdekim-ond01.github.io/obsidian-blog/ondevice-ai-02-transfer-learning.html",
+    },
+    {
+        "week": "6",
+        "band": "Edge",
+        "kind": "edge",
+        "title": "Ondevice AI 기본",
+        "body": "라즈베리파이, 카메라 입력, TFLite 추론, confidence, FPS 관점을 정리합니다.",
+        "url": "https://philipdekim-ond01.github.io/obsidian-blog/ondevice-ai-00-overview.html",
+    },
+    {
+        "week": "7",
+        "band": "Edge",
+        "kind": "edge",
+        "title": "모델 경량화",
+        "body": "Quantization, Pruning, 모델 크기, latency, memory의 trade-off를 배웁니다.",
+        "url": "https://philipdekim-ond01.github.io/obsidian-blog/ondevice-ai-03-lightweighting.html",
+    },
+    {
+        "week": "8",
+        "band": "실습 1",
+        "kind": "practice",
+        "title": "실습 1: TFLite RPS",
+        "body": "가위바위보 분류 모델을 만들고 TFLite로 변환해 디바이스 추론 흐름을 확인합니다.",
+        "url": "https://philipdekim-ond01.github.io/obsidian-blog/ondevice-ai-01-rps-tflite.html",
+    },
+    {
+        "week": "9",
+        "band": "실습 2",
+        "kind": "practice",
+        "title": "실습 2: QAT 경량화",
+        "body": "DenseNet/ResNet 기반 RPS 모델에 데이터 보강과 QAT를 적용해 성능 손실을 줄입니다.",
+        "url": "https://philipdekim-ond01.github.io/obsidian-blog/ondevice-ai-04-lightweighting-qat-beginner.html",
+    },
+    {
+        "week": "10",
+        "band": "발표",
+        "kind": "practice",
+        "title": "과제 발표",
+        "body": "정확도, F1, 모델 크기, 추론 시간, 개선 아이디어를 한 장 리포트와 데모로 발표합니다.",
+        "url": "https://philipdekim-ond01.github.io/obsidian-blog/ondevice-ai-05-resnet-rps-qat.html",
+    },
+]
+
+rail_html = '<div class="week-rail-wrap"><div class="week-rail">'
+for item in weeks:
+    rail_html += f"""
+    <div class="week-node {item["kind"]}">
+        <div class="week-dot">{item["week"]}</div>
+        <div class="week-label">{item["title"]}</div>
+        <div class="week-band">{item["band"]}</div>
+    </div>
+    """
+rail_html += "</div></div>"
+st.markdown(rail_html, unsafe_allow_html=True)
+
+st.markdown('<div class="week-grid">', unsafe_allow_html=True)
+for item in weeks:
+    st.markdown(
+        f"""
+        <div class="week-card">
+            <h3>{item["week"]}주차 · {item["title"]}</h3>
+            <p>{item["body"]}</p>
+            <a href="{item["url"]}" target="_blank" rel="noopener">해당 강좌 열기</a>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+st.markdown("</div>", unsafe_allow_html=True)
+
+
 left, right = st.columns([1.05, 0.95], gap="large")
 
 with left:
-    st.markdown('<div class="section-title">강의 진행 순서</div>', unsafe_allow_html=True)
-    timeline = [
-        ("01", "AI와 데이터 문제 정의", "예측 대상 y와 입력 X를 나누고, 모델이 무엇을 학습하는지 정리합니다."),
-        ("02", "머신러닝 기초 수학", "`y - Xw`, 손실함수, OLS, 미분, 경사하강법의 의미를 연결합니다."),
-        ("03", "회귀와 정규화", "Linear Regression, Ridge, Lasso, SVR을 비교하고 과적합을 설명합니다."),
-        ("04", "분류 모델", "Naive Bayes, Decision Tree, SVM을 통해 데이터를 나누는 여러 방식을 배웁니다."),
-        ("05", "평가 지표", "accuracy, recall, precision, F1, ROC-AUC를 문제 목적에 맞게 해석합니다."),
-        ("06", "딥러닝 입문", "Tensor, batch, model, criterion, optimizer가 학습 코드에서 어떤 역할을 하는지 봅니다."),
-        ("07", "DNN/CNN Vision", "이미지 데이터를 DNN과 CNN으로 처리하고 feature map 개념을 이해합니다."),
-        ("08", "이상탐지 응용", "제조·의료·반도체 이미지에서 정상/불량 판별 흐름을 실습합니다."),
-        ("09", "Ondevice AI 입문", "디바이스 제약, 지연시간, 메모리, 전력, 개인정보 보호 관점을 정리합니다."),
-        ("10", "모델 경량화와 배포", "모델 크기 축소, quantization, edge deployment의 기본 개념을 다룹니다."),
-        ("11", "프로젝트", "작은 AI 모델을 만들고 성능과 디바이스 적용 가능성을 함께 평가합니다."),
-        ("12", "Streamlit 발표", "결과를 웹 앱으로 정리해 교육 자료와 데모 형태로 공유합니다."),
-    ]
-
-    st.markdown('<div class="timeline">', unsafe_allow_html=True)
-    for num, title, body in timeline:
-        st.markdown(
-            f"""
-            <div class="timeline-item">
-                <h4>{num}. {title}</h4>
-                <p>{body}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown('<div class="section-title">주차별 운영 포인트</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="code-box">1주차: 선형대수와 AI 계산 언어
+2~3주차: 머신러닝 모델과 평가
+4~5주차: 딥러닝과 CNN
+6주차: Ondevice AI 기본 구조
+7주차: 경량화와 성능 trade-off
+8주차: 실습 1 - TFLite RPS
+9주차: 실습 2 - QAT 경량화
+10주차: 과제 발표 - 성능·속도·크기 비교</div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 with right:
     st.markdown('<div class="section-title">수업의 핵심 질문</div>', unsafe_allow_html=True)
