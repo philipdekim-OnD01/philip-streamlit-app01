@@ -26,6 +26,10 @@ if get_page_param() == "roadmap":
     runpy.run_path("pages/01_Course_Roadmap.py", run_name="course_roadmap_embedded")
     st.stop()
 
+if get_page_param() == "ml-service":
+    runpy.run_path("pages/02_ML_Service.py", run_name="ml_service_embedded")
+    st.stop()
+
 
 st.markdown(
     """
@@ -280,6 +284,7 @@ with st.sidebar:
     st.markdown("- Ondevice AI 응용")
     st.markdown("- 실습·배포 중심 구성")
     st.link_button("Ondevice AI 교육 로드맵", "/?page=roadmap")
+    st.link_button("머신러닝 평가 서비스", "/?page=ml-service")
     st.divider()
     st.markdown("**바로가기**")
     st.link_button("GitHub Repository", "https://github.com/philipdekim-OnD01/philip-streamlit-app01")
@@ -306,7 +311,21 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+st.markdown(
+    """
+    <div class="note-card" style="margin-top: 18px;">
+        <p style="font-size: 16px; font-weight: 700; color: #162033; margin-bottom: 10px;">
+            이번에 만든 10주 교육 로드맵을 바로 열어보세요.
+        </p>
+        <p style="margin-bottom: 14px;">
+            머신러닝, 딥러닝, Ondevice AI의 전체 흐름과 주차별 링크가 정리된 페이지로 이동합니다.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 st.link_button("10주 교육 로드맵 바로 열기", "/?page=roadmap")
+st.link_button("머신러닝 평가 서비스 열기", "/?page=ml-service")
 
 
 st.markdown('<div class="section-title">교육의 3단계</div>', unsafe_allow_html=True)
