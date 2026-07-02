@@ -4,7 +4,7 @@ import streamlit as st
 
 
 st.set_page_config(
-    page_title="Philip Kim Deep Learning Lab",
+    page_title="Philip Kim Ondevice AI Education",
     page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded",
@@ -256,14 +256,14 @@ st.markdown(
 
 with st.sidebar:
     st.markdown("### Philip Kim Lab")
-    st.caption("Deep Learning Lecture Portal")
+    st.caption("Ondevice AI Education Portal")
     st.divider()
     st.markdown("**첫 화면 구성**")
-    st.markdown("- 딥러닝 강의 로드맵")
-    st.markdown("- 실습 중심 학습 흐름")
-    st.markdown("- Vision 이상탐지 예제")
-    st.markdown("- 수업 자료 게시 예정")
-    st.info("왼쪽 페이지 메뉴에서 딥러닝 강의 로드맵을 열 수 있습니다.")
+    st.markdown("- 머신러닝 기초")
+    st.markdown("- 딥러닝 모델 이해")
+    st.markdown("- Ondevice AI 응용")
+    st.markdown("- 실습·배포 중심 구성")
+    st.info("왼쪽 페이지 메뉴에서 Ondevice AI 교육 로드맵을 열 수 있습니다.")
     st.divider()
     st.markdown("**바로가기**")
     st.link_button("GitHub Repository", "https://github.com/philipdekim-OnD01/philip-streamlit-app01")
@@ -273,17 +273,17 @@ with st.sidebar:
 st.markdown(
     """
     <section class="hero">
-        <div class="eyebrow">DEEP LEARNING EDUCATION</div>
-        <h2>딥러닝을 수식이 아니라 동작으로 이해하는 강의실</h2>
+        <div class="eyebrow">ONDEVICE AI EDUCATION</div>
+        <h2>머신러닝에서 딥러닝을 지나 Ondevice AI까지</h2>
         <p>
-            입력 데이터가 모델을 지나 예측값이 되고, 손실 함수와 역전파를 통해 가중치가 바뀌는 과정을
-            초급자도 따라올 수 있도록 시각화와 실습 중심으로 정리합니다.
+            이 교육은 모델을 외우는 수업이 아니라, 데이터를 이해하고 모델을 학습시킨 뒤
+            실제 디바이스 환경에서 작동 가능한 AI 서비스로 연결하는 흐름을 다룹니다.
         </p>
         <div class="hero-actions">
-            <div class="pill">PyTorch 실습</div>
-            <div class="pill">CNN Vision</div>
-            <div class="pill">이상탐지</div>
-            <div class="pill">반도체·의료 이미지 예제</div>
+            <div class="pill">Machine Learning</div>
+            <div class="pill">Deep Learning</div>
+            <div class="pill">Ondevice AI</div>
+            <div class="pill">Streamlit 실습</div>
         </div>
     </section>
     """,
@@ -291,13 +291,12 @@ st.markdown(
 )
 
 
-st.markdown('<div class="section-title">오늘 배울 핵심</div>', unsafe_allow_html=True)
-metric_cols = st.columns(4)
+st.markdown('<div class="section-title">교육의 3단계</div>', unsafe_allow_html=True)
+metric_cols = st.columns(3)
 metrics = [
-    ("01", "데이터", "이미지와 라벨을 텐서로 바꾸는 과정"),
-    ("02", "모델", "DNN, CNN이 입력을 예측값으로 바꾸는 방식"),
-    ("03", "학습", "loss, backward, optimizer의 실제 역할"),
-    ("04", "평가", "accuracy, recall, F1, ROC-AUC 해석"),
+    ("01", "머신러닝", "데이터, 회귀, 분류, 평가 지표를 통해 AI의 기본 판단 구조를 이해합니다."),
+    ("02", "딥러닝", "Tensor, DNN, CNN, loss, backpropagation으로 학습 루프를 해석합니다."),
+    ("03", "Ondevice AI", "작은 모델, 빠른 추론, 경량화, 배포를 통해 실제 디바이스 활용으로 연결합니다."),
 ]
 
 for col, (value, label, desc) in zip(metric_cols, metrics):
@@ -317,17 +316,17 @@ for col, (value, label, desc) in zip(metric_cols, metrics):
 left, right = st.columns([1.05, 0.95], gap="large")
 
 with left:
-    st.markdown('<div class="section-title">강의 로드맵</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">한눈에 보는 로드맵</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="section-subtitle">처음 보는 학생도 코드 실행 순서대로 이해할 수 있게 구성했습니다.</div>',
+        '<div class="section-subtitle">기초 모델 이해에서 디바이스 적용까지 단계적으로 올라갑니다.</div>',
         unsafe_allow_html=True,
     )
 
     roadmap = [
-        ("1", "텐서와 데이터셋", "MNIST/FashionMNIST 이미지를 텐서로 읽고, batch가 왜 필요한지 이해합니다."),
-        ("2", "DNN 기본 구조", "Flatten, Linear, ReLU, CrossEntropyLoss, Adam optimizer를 연결합니다."),
-        ("3", "CNN과 이미지 특징", "Convolution, pooling, channel 개념을 그림과 코드로 연결합니다."),
-        ("4", "Vision 이상탐지", "정상 데이터만 학습하고 재구성 오차 또는 확신 부족으로 이상 점수를 만듭니다."),
+        ("1", "머신러닝 기초", "OLS, Ridge, Lasso, Naive Bayes, Tree, SVM으로 데이터가 어떻게 예측으로 바뀌는지 봅니다."),
+        ("2", "딥러닝 기초", "DNN, CNN, loss, optimizer, batch, GPU/MPS 개념을 코드 중심으로 이해합니다."),
+        ("3", "Vision AI 실습", "이미지 분류와 이상탐지를 통해 반도체·의료·제조 데이터 응용 흐름을 만듭니다."),
+        ("4", "Ondevice AI 적용", "모델 경량화, 지연시간, 메모리, 배포 관점에서 실제 적용 가능성을 점검합니다."),
     ]
 
     for num, title, body in roadmap:
@@ -345,30 +344,32 @@ with left:
         )
 
 with right:
-    st.markdown('<div class="section-title">학습 루프 한눈에 보기</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">수업의 핵심 관점</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="section-subtitle">딥러닝 수업에서 가장 중요한 코드는 아래 5단계입니다.</div>',
+        '<div class="section-subtitle">Ondevice AI는 모델 성능만 보는 수업이 아닙니다.</div>',
         unsafe_allow_html=True,
     )
     st.markdown(
         """
-        <div class="code-box">for x, y in loader:
-    logit = model(x)              # 1. forward
-    loss = criterion(logit, y)    # 2. loss
-    optimizer.zero_grad()         # 3. grad reset
-    loss.backward()               # 4. backprop
-    optimizer.step()              # 5. update</div>
+        <div class="code-box">1. 잘 예측하는가?
+   accuracy, recall, F1, ROC-AUC
+
+2. 작고 빠르게 만들 수 있는가?
+   model size, latency, memory
+
+3. 실제 환경에서 쓸 수 있는가?
+   device, sensor, privacy, deployment</div>
         """,
         unsafe_allow_html=True,
     )
 
 
-st.markdown('<div class="section-title">강의 모듈</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">챕터 소개</div>', unsafe_allow_html=True)
 module_cols = st.columns(3)
 modules = [
-    ("Module 1", "딥러닝 기초", "손실 함수, 옵티마이저, 배치, GPU/MPS 개념을 초급자 언어로 정리합니다."),
-    ("Module 2", "CNN Vision 실습", "이미지 픽셀, 채널, 필터, feature map을 실습 코드와 함께 설명합니다."),
-    ("Module 3", "이상탐지 프로젝트", "MVTec, Casting, 의료 이미지 예제로 정상/불량 판별 흐름을 만듭니다."),
+    ("Chapter 1", "머신러닝", "회귀, 분류, 평가 지표, 교차검증을 통해 AI 모델 선택의 기준을 잡습니다."),
+    ("Chapter 2", "딥러닝", "DNN/CNN과 학습 루프를 이해하고 이미지 데이터를 다루는 실습으로 확장합니다."),
+    ("Chapter 3", "Ondevice AI", "모델을 작고 빠르게 만들어 현장 장치와 서비스에 올리는 관점을 배웁니다."),
 ]
 
 for col, (tag, title, body) in zip(module_cols, modules):
@@ -383,6 +384,51 @@ for col, (tag, title, body) in zip(module_cols, modules):
             """,
             unsafe_allow_html=True,
         )
+
+
+st.markdown('<div class="section-title">기존 블로그 강의자료 연결</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="section-subtitle">obsidian-blog에 정리된 강의자료를 이 Streamlit 앱의 학습 흐름에 맞춰 연결합니다.</div>',
+    unsafe_allow_html=True,
+)
+
+link_cols = st.columns(4)
+blog_links = [
+    (
+        "AI 수학 기초",
+        "행렬, 미분, 경사하강법, softmax, cross entropy",
+        "https://philipdekim-ond01.github.io/obsidian-blog/ai-math/",
+    ),
+    (
+        "전체 복습 노트",
+        "선형대수부터 머신러닝, 딥러닝, 온디바이스 경량화까지",
+        "https://philipdekim-ond01.github.io/obsidian-blog/ai-semiconductor-course-review-ondevice-lightweighting.html",
+    ),
+    (
+        "Ondevice AI 전체지도",
+        "라즈베리파이, TFLite, RPS 실습, 전이학습, 경량화",
+        "https://philipdekim-ond01.github.io/obsidian-blog/ondevice-ai-00-overview.html",
+    ),
+    (
+        "QAT 실습",
+        "DenseNet/ResNet, 데이터 보강, QAT, TFLite 변환",
+        "https://philipdekim-ond01.github.io/obsidian-blog/ondevice-ai-04-lightweighting-qat-beginner.html",
+    ),
+]
+
+for col, (title, desc, url) in zip(link_cols, blog_links):
+    with col:
+        st.markdown(
+            f"""
+            <div class="course-card">
+                <span class="tag">Blog</span>
+                <h3>{title}</h3>
+                <p>{desc}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.link_button("자료 열기", url, use_container_width=True)
 
 
 st.markdown('<div class="section-title">성능 지표는 이렇게 읽습니다</div>', unsafe_allow_html=True)
@@ -421,9 +467,9 @@ with chart_cols[1]:
         """
         <div class="note-card">
             <p>
-                불량률이 낮은 데이터에서는 accuracy만 보면 위험합니다.
-                예를 들어 정상 95%, 불량 5% 데이터에서 전부 정상이라고 예측해도 accuracy는 95%가 됩니다.
-                그래서 이상탐지와 의료·공정 데이터에서는 recall, F1-score, PR-AUC를 함께 확인해야 합니다.
+                Ondevice AI 교육에서도 성능 지표는 출발점입니다.
+                실제 적용에서는 accuracy뿐 아니라 recall, F1-score, latency, memory, 전력 소모까지 함께 봐야 합니다.
+                특히 의료·제조·반도체 데이터에서는 놓치면 안 되는 class를 기준으로 평가해야 합니다.
             </p>
         </div>
         """,
@@ -434,8 +480,8 @@ with chart_cols[1]:
 st.markdown(
     """
     <div class="footer">
-        이 페이지는 딥러닝 강의 자료를 올리기 위한 첫 화면입니다.
-        다음 단계에서는 각 Module을 개별 페이지로 분리하고, 노트북·Markdown·데이터 실습 링크를 연결하면 됩니다.
+        이 페이지는 Ondevice AI 교육의 첫 화면입니다.
+        머신러닝, 딥러닝, Ondevice AI 챕터를 단계적으로 확장하고 수업 자료와 실습 링크를 연결합니다.
     </div>
     """,
     unsafe_allow_html=True,
