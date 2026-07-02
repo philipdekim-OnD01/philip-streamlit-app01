@@ -3,11 +3,12 @@ import plotly.graph_objects as go
 import streamlit as st
 
 
-st.set_page_config(
-    page_title="Ondevice AI 교육 로드맵",
-    page_icon=None,
-    layout="wide",
-)
+if __name__ == "__main__":
+    st.set_page_config(
+        page_title="Ondevice AI 교육 로드맵",
+        page_icon=None,
+        layout="wide",
+    )
 
 
 st.markdown(
